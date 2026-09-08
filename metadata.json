@@ -1,0 +1,6 @@
+{
+  "name": "Educational Assessment & Psychometrics Platform",
+  "description": "Microservices & Event-Driven DDD Platform with Hexagonal Architecture, Drizzle ORM schemas, Exam Engine & Psychometrics Analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
