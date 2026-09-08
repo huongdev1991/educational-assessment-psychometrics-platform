@@ -7,11 +7,13 @@ import {
   Radio, 
   Layout, 
   BarChart3, 
-  CheckCircle,
-  BookOpen
+  CheckCircle, 
+  BookOpen, 
+  KeyRound,
+  Milestone
 } from 'lucide-react';
 
-export type ActiveTabType = 'hexagonal' | 'drizzle' | 'exam-engine' | 'events' | 'frontend' | 'psychometrics';
+export type ActiveTabType = 'plan' | 'iam' | 'hexagonal' | 'drizzle' | 'exam-engine' | 'events' | 'frontend' | 'psychometrics';
 
 interface NavigationHeaderProps {
   activeTab: ActiveTabType;
@@ -20,6 +22,8 @@ interface NavigationHeaderProps {
 
 export const NavigationHeader: React.FC<NavigationHeaderProps> = ({ activeTab, setActiveTab }) => {
   const tabs = [
+    { id: 'plan', label: '🗺️ Kế Hoạch Triển Khai', icon: Milestone, badge: 'Roadmap /plan/' },
+    { id: 'iam', label: '0. IAM Service', icon: KeyRound, badge: 'Headless RS256' },
     { id: 'hexagonal', label: '1. Hexagonal & DDD', icon: Layers, badge: 'Question Service' },
     { id: 'drizzle', label: '2. Drizzle Schemas', icon: Database, badge: 'Postgres DB' },
     { id: 'exam-engine', label: '3. Exam Engine', icon: Cpu, badge: 'Seeded PRNG' },

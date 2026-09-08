@@ -29,13 +29,23 @@ export const LivePsychometricsLab: React.FC = () => {
               <Network className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-900">Kiến Trúc Tổng Thể: 6 Microservices Bounded Contexts</h2>
-              <p className="text-sm text-slate-500">Mô hình Database-per-service kết hợp Sync REST/gRPC và Async Kafka Broker</p>
+              <h2 className="text-xl font-bold text-slate-900">Kiến Trúc Tổng Thể: 7 Microservices Bounded Contexts</h2>
+              <p className="text-sm text-slate-500">Mô hình Database-per-service kết hợp Headless IAM (RS256/JWKS), Sync REST/gRPC và Async Kafka Broker</p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-3 text-xs">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-3 text-xs">
+          {/* Service 0: IAM */}
+          <div className="p-4 rounded-xl border border-slate-200 bg-violet-50/40 hover:bg-violet-50/70 transition-colors">
+            <div className="flex items-center justify-between font-bold text-slate-800 mb-1">
+              <span className="text-violet-700">0. IAM Service (Headless)</span>
+              <span className="font-mono text-[10px] bg-violet-100 text-violet-800 px-1.5 py-0.5 rounded">PostgreSQL DB</span>
+            </div>
+            <p className="text-slate-600 mb-2">Định danh User tối giản, JWT RS256, JWKS endpoint, Fine-grained Scopes, Stateless ext_ctx.</p>
+            <div className="text-slate-400 text-[11px] font-mono">OAuth2 / JWKS | Asymmetric RS256</div>
+          </div>
+
           {/* Service 1 */}
           <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition-colors">
             <div className="flex items-center justify-between font-bold text-slate-800 mb-1">

@@ -7,21 +7,24 @@
 ## 📑 Mục Lục
 1. [Tầm Nhìn & Phạm Vi Hệ Thống (System Vision & Scope)](#1-tầm-nhìn--phạm-vi-hệ-thống)
 2. [Nguyên Lý Kiến Trúc Cốt Lõi (Core Architectural Principles)](#2-nguyên-lý-kiến-trúc-cốt-lõi)
-3. [Bản Đồ 6 Bounded Contexts (Microservices Landscape)](#3-bản-đồ-6-bounded-contexts)
-4. [Chuẩn Thiết Kế Hexagonal Architecture (Ports & Adapters)](#4-chuẩn-thiết-kế-hexagonal-architecture)
-5. [Thiết Kế Cơ Sở Dữ Liệu & Indexing Strategy (Drizzle ORM + PostgreSQL)](#5-thiết-kế-cơ-sở-dữ-liệu--indexing-strategy)
-6. [Thuật Toán Sinh Đề Thi Xác Định (Deterministic Permutation Engine)](#6-thuật-toán-sinh-đề-thi-xác-định)
-7. [Đặc Tả Hợp Đồng Bất Đồng Bộ (Event-Driven Architecture & Kafka Payload)](#7-đặc-tả-hợp-đồng-bất-đồng-bộ)
-8. [Phép Đo Tâm Trắc Học Giáo Dục (Psychometrics Item Analysis Engine)](#8-phép-đo-tâm-trắc-học-giáo-dục)
-9. [Kiến Trúc Frontend (React 19 + Tailwind CSS + Feature Slices)](#9-kiến-trúc-frontend)
-10. [Quy Chuẩn Lập Trình & Quy Trình Kỹ Thuật (Engineering Standards)](#10-quy-chuẩn-lập-trình--quy-trình-kỹ-thuật)
-11. [Hướng Dẫn Cài Đặt & Vận Hành (Getting Started & Deployment)](#11-hướng-dẫn-cài-đặt--vận-hành)
+3. [Bản Đồ 7 Bounded Contexts (Microservices Landscape)](#3-bản-đồ-7-bounded-contexts)
+4. [Dịch Vụ Định Danh & Phân Quyền: 0. IAM Service (Headless & Generic)](#4-dịch-vụ-định-danh--phân-quyền-0-iam-service)
+5. [Chuẩn Thiết Kế Hexagonal Architecture (Ports & Adapters)](#5-chuẩn-thiết-kế-hexagonal-architecture)
+6. [Thiết Kế Cơ Sở Dữ Liệu & Indexing Strategy (Drizzle ORM + PostgreSQL)](#6-thiết-kế-cơ-sở-dữ-liệu--indexing-strategy)
+7. [Thuật Toán Sinh Đề Thi Xác Định (Deterministic Permutation Engine)](#7-thuật-toán-sinh-đề-thi-xác-định)
+8. [Đặc Tả Hợp Đồng Bất Đồng Bộ (Event-Driven Architecture & Kafka Payload)](#8-đặc-tả-hợp-đồng-bất-đồng-bộ)
+9. [Phép Đo Tâm Trắc Học Giáo Dục (Psychometrics Item Analysis Engine)](#9-phép-đo-tâm-trắc-học-giáo-dục)
+10. [Kiến Trúc Frontend (React 19 + Tailwind CSS + Feature Slices)](#10-kiến-trúc-frontend)
+11. [Quy Chuẩn Lập Trình & Quy Trình Kỹ Thuật (Engineering Standards)](#11-quy-chuẩn-lập-trình--quy-trình-kỹ-thuật)
+12. [Hướng Dẫn Cài Đặt & Vận Hành (Getting Started & Deployment)](#12-hướng-dẫn-cài-đặt--vận-hành)
+13. [Kế Hoạch Triển Khai Chi Tiết (Master Implementation Plan: `/plan/`)](#13-kế-hoạch-triển-khai-chi-tiết)
 
 ---
 
 ## 1. Tầm Nhìn & Phạm Vi Hệ Thống
 
 **Educational Assessment & Psychometrics Platform** là nền tảng khảo thí chuẩn hóa và phân tích đo lường tâm trắc học giáo dục thế hệ mới, phục vụ:
+- Dịch vụ định danh và xác thực phi tập trung (Headless IAM Service), cấp phát JWT RS256 và phân quyền hạt mịn `<service>:<action>` độc lập với logic trường/lớp.
 - Quản lý cây tri thức phân cấp sâu (Chương trình GDPT, Quốc tế, Khung năng lực, Chuẩn đầu ra).
 - Ngân hàng câu hỏi RichText/LaTeX hỗ trợ phân loại nhận thức Bloom và **phiên bản bất biến (Immutable Versioning)**.
 - Soạn thảo và thẩm định ma trận đề thi (Assessment Blueprint) 2 chiều (Đơn vị kiến thức $\times$ Mức độ nhận thức).
@@ -49,7 +52,7 @@ Mọi quyết định thiết kế và dòng mã nguồn trong dự án **bắt 
 ```
 
 ### 2.1. Domain-Driven Design (DDD) & Ubiquitous Language
-- Mỗi nghiệp vụ có ranh giới ngữ cảnh (Bounded Context) rõ ràng, sử dụng đồng nhất bộ thuật ngữ chuyên ngành: *Curriculum, Subject, Topic, Knowledge Node, Cognitive Level, Question Aggregate, Version, Blueprint Matrix, Exam Variant, Attempt, Item Difficulty ($P$), Item Discrimination ($D$)*.
+- Mỗi nghiệp vụ có ranh giới ngữ cảnh (Bounded Context) rõ ràng, sử dụng đồng nhất bộ thuật ngữ chuyên ngành: *User ID, Credentials, Global Role, Scopes, Stateless External Context (ext_ctx), Curriculum, Subject, Topic, Knowledge Node, Cognitive Level, Question Aggregate, Version, Blueprint Matrix, Exam Variant, Attempt, Item Difficulty ($P$), Item Discrimination ($D$)*.
 - Nghiệp vụ cốt lõi nằm trọn trong **Domain Entities, Value Objects và Aggregates**, không bị ô nhiễm bởi thư viện bên thứ ba hay Framework HTTP/ORM.
 
 ### 2.2. Hexagonal Architecture (Ports & Adapters)
@@ -59,7 +62,7 @@ Mọi quyết định thiết kế và dòng mã nguồn trong dự án **bắt 
 
 ### 2.3. Database-per-Service & Zero Distributed Monolith
 - Mỗi Bounded Context sở hữu một Database riêng biệt. **Nghiêm cấm tuyệt đối việc JOIN chéo bảng giữa 2 database của 2 dịch vụ khác nhau.**
-- Quan hệ liên dịch vụ chỉ lưu trữ dưới dạng định danh nguyên thủy (`uuid` string, ví dụ `knowledgeNodeId: string`). Khi cần đồng bộ dữ liệu, sử dụng REST/gRPC (truy vấn nhanh) hoặc Kafka Events (cập nhật trạng thái).
+- Quan hệ liên dịch vụ chỉ lưu trữ dưới dạng định danh nguyên thủy (`uuid` string, ví dụ `userId: string`, `knowledgeNodeId: string`). Khi cần đồng bộ dữ liệu, sử dụng REST/gRPC (truy vấn nhanh) hoặc Kafka Events (cập nhật trạng thái).
 
 ### 2.4. Event-Driven Architecture (EDA) & Asynchronous Decoupling
 - Khi một hành động hoàn tất trong phiên thi (ví dụ: Nộp bài thi), **Attempt Service** phản hồi thành công cho thí sinh trong vòng $< 50\text{ms}$, đồng thời phát sự kiện `AttemptCompletedEvent` lên Kafka Broker.
@@ -74,43 +77,42 @@ Mọi quyết định thiết kế và dòng mã nguồn trong dự án **bắt 
 
 ---
 
-## 3. Bản Đồ 6 Bounded Contexts
+## 3. Bản Đồ 7 Bounded Contexts
 
-Hệ thống được chia thành 6 Microservices tương ứng với 6 ranh giới nghiệp vụ độc lập:
+Hệ thống được module hóa thành **7 Microservices độc lập** (Service 0 + 6 Domain Services):
 
 ```
-                                  ┌───────────────────────────┐
-                                  │   1. Knowledge Service    │
-                                  │ (Curriculums, Nodes, LOs) │
-                                  └─────────────┬─────────────┘
-                                                │ (gRPC Sync Lookup)
-                                                ▼
-┌───────────────────────────┐     ┌───────────────────────────┐
-│   3. Assessment Service   │────▶│    2. Question Service    │
-│ (Blueprints, Taxonomies)  │     │ (Questions, LaTeX, Bloom) │
-└─────────────┬─────────────┘     └─────────────┬─────────────┘
-              │ (Candidate Pool Query)          │ (Candidate Pool)
-              ▼                                 ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      4. Exam Service                        │
-│ (Seeded Exam Generator, Variant Shuffler 101-104, Lock)     │
-└─────────────────────────────┬───────────────────────────────┘
-                              │ (Delivery API)
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     5. Attempt Service                      │
-│ (Candidate Session, Anti-Cheat Blur Tracking, Auto-Grading) │
-└─────────────────────────────┬───────────────────────────────┘
-                              │ (Kafka Event: AttemptCompletedEvent)
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    6. Analytics Service                     │
-│ (Psychometrics P & D Indices, Distractor Analysis, Bell)    │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│              0. Identity & Access Management (IAM) Service              │
+│       (Headless, RS256 JWT, JWKS, Scopes <svc>:<act>, ext_ctx)          │
+└────────┬────────────────────────────────────────────────────────────────┘
+         │ (Issues RS256 JWT Token with Scopes & Stateless ext_ctx)
+         ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│            API Gateway / Downstream Services Auth Middleware            │
+│         (Validates RS256 JWT locally via Cached JWKS - 0 Network Call)  │
+└────────┬────────────────────────────────────────────────────────────────┘
+         │
+         ├───▶ [1. Knowledge Service] (Curriculums, Nodes, Learning Outcomes)
+         │           │ (gRPC Sync Lookup)
+         │           ▼
+         ├───▶ [2. Question Service] (Questions, LaTeX, Bloom, Versioning)
+         │           ▲
+         ├───▶ [3. Assessment Service] (Ma trận đề Blueprint 2 chiều)
+         │           │
+         │           ▼
+         ├───▶ [4. Exam Service] (Seeded PRNG Generator, Variant 101-104)
+         │           │
+         │           ▼
+         ├───▶ [5. Attempt Service] (Session, Anti-Cheat, Auto-Grading)
+         │           │
+         │           ▼ (Kafka Event: AttemptCompletedEvent)
+         └───▶ [6. Analytics Service] (Psychometrics P & D, Distractors)
 ```
 
 | # | Bounded Context | Trách Nhiệm Nghiệp Vụ Chính | Giao Thức Giao Tiếp | Storage |
 |---|---|---|---|---|
+| **0** | **IAM Service (Headless)** | Quản lý định danh tối giản (`userId`, credentials), cấp phát JWT RS256, JWKS endpoint, phân quyền Scopes hạt mịn `<service>:<action>`, nhúng `ext_ctx` không phụ thuộc trường/lớp. | OAuth2 / JWKS / REST API | PostgreSQL (`iam_db`) |
 | **1** | **Knowledge Service** | Quản lý cây tri thức phân cấp, Yêu cầu cần đạt (Learning Outcomes), Versioning cây tri thức. | gRPC Server / REST API | PostgreSQL (`knowledge_db`) |
 | **2** | **Question Service** | Quản trị ngân hàng câu hỏi RichText/LaTeX, cấp độ nhận thức Bloom, quy trình duyệt, phiên bản bất biến. | REST API / gRPC Server | PostgreSQL (`question_db`) |
 | **3** | **Assessment Service** | Quản lý ma trận đề thi (Blueprint 2 chiều: Chủ đề $\times$ Mức độ nhận thức), phân bổ hạn ngạch câu hỏi và điểm số. | REST API | PostgreSQL (`assessment_db`) |
@@ -120,7 +122,240 @@ Hệ thống được chia thành 6 Microservices tương ứng với 6 ranh gi�
 
 ---
 
-## 4. Chuẩn Thiết Kế Hexagonal Architecture
+## 4. Dịch Vụ Định Danh & Phân Quyền: 0. IAM Service (Headless & Generic)
+
+### 4.1. Triết Lý Thiết Kế: Headless & Generic (Stateless Context)
+Trong các hệ thống thi cử truyền thống, dịch vụ định danh thường bị sa vào vũng lầy **"School Management Monolith"** — cố gắng nhồi nhét mô hình phân cấp trường học, khối, lớp, phòng thi, ca thi, danh sách giáo viên bộ môn vào trong Auth Service. Điều này dẫn tới:
+- Cực kỳ cồng kềnh, liên kết chặt (tight-coupling), không thể tái sử dụng cho các kỳ thi liên trường, thi chứng chỉ độc lập hoặc tích hợp với các hệ thống LMS bên ngoài (Canvas, Moodle, Google Classroom).
+- Nghẽn cổ chai cơ sở dữ liệu khi xác thực đồng thời hàng vạn thí sinh vào phòng thi.
+
+**IAM Service trong hệ thống này được thiết kế theo triết lý Headless & Generic tối giản**:
+1. **Hoàn toàn độc lập với khái niệm Trường/Lớp**: IAM chỉ biết đến khái niệm định danh thuần túy (`User`, `Credentials`, `Global Roles`).
+2. **Không duy trì trạng thái phòng thi**: Trạng thái thí sinh vào phòng thi nào, ca thi nào thuộc trách nhiệm của `Attempt Service` và hệ thống điều phối thi bên ngoài.
+3. **Stateless Token Verification**: Sử dụng thuật toán bất đối xứng RS256 và chuẩn JWKS. Mọi downstream services tự xác thực token tại chỗ với chi phí $0\text{ms}$ network call.
+
+---
+
+### 4.2. Quản Lý Định Danh Tối Giản (Minimalist Identity)
+IAM Service chỉ quản lý các trường định danh cơ bản:
+- `userId`: Chuỗi UUID duy nhất trên toàn hệ thống.
+- `credentials`: Mật khẩu được mã hóa một chiều bằng thuật toán an toàn cao cấp **Argon2id** (hoặc Bcrypt với work-factor 12) kèm Unique Salt, chống tấn công dò mật khẩu GPU/ASIC.
+- **4 Global Roles Cốt Lõi**:
+  - `ADMIN`: Quản trị viên hệ thống (cấp phát quyền, bảo trì hệ thống).
+  - `AUTHOR`: Tác giả nội dung (soạn thảo câu hỏi, xây dựng ma trận đề thi).
+  - `REVIEWER`: Hội đồng thẩm định (duyệt câu hỏi, nghiệm thu đề thi).
+  - `CANDIDATE`: Thí sinh tham dự kỳ thi (làm bài, nộp bài thi).
+
+---
+
+### 4.3. Cơ Chế Xác Thực Bất Đối Xứng RS256 & Chuẩn JWKS
+Thay vì sử dụng thuật toán khóa đối xứng (HS256) đòi hỏi phải chia sẻ chung một bí mật bí mật (`secret_key`) đến tất cả microservices — tiềm ẩn nguy cơ rò rỉ bảo mật nghiêm trọng — hệ thống bắt buộc sử dụng **RS256 (RSA Signature with SHA-256)**:
+
+```
+┌─────────────────┐                                    ┌──────────────────────┐
+│   Client/App    │                                    │      IAM Service     │
+└────────┬────────┘                                    └──────────┬───────────┘
+         │ 1. POST /oauth/token (username + password)             │
+         ├───────────────────────────────────────────────────────▶│ (Signs with
+         │ 2. Returns RS256 JWT Token                             │  Private Key)
+         │◀───────────────────────────────────────────────────────┤
+         │                                                        │
+         │ 3. API Request: Authorization: Bearer <Token>          │
+         ▼                                                        │
+┌──────────────────────────────┐                                  │
+│  Downstream Microservice     │                                  │
+│ (Question/Exam/Attempt/etc.) │                                  │
+└────────┬─────────────────────┘                                  │
+         │ (Key cache miss? First time only)                      │
+         │ 4. GET /.well-known/jwks.json                          │
+         ├───────────────────────────────────────────────────────▶│
+         │ 5. Returns Public Keys (kid: 'iam-key-2026-v1')        │
+         │◀───────────────────────────────────────────────────────┤
+         │
+         │ 6. Validates Token locally via in-memory RSA Public Key!
+         │    (ZERO NETWORK CALL TO IAM for all subsequent requests!)
+         ▼
+     [Execute Controller]
+```
+
+- **Private Key**: Được lưu trữ an toàn trong KMS/HashiCorp Vault và chỉ nạp vào bộ nhớ của `iam-service` để ký Token khi người dùng đăng nhập.
+- **Public Key & JWKS**: Được công khai tại endpoint tiêu chuẩn RFC 7517 `GET /.well-known/jwks.json`.
+- **Cơ Chế Xoay Khóa (Key Rotation)**: Header của JWT chứa trường `kid` (Key ID, ví dụ: `iam-key-2026-v1`). Khi IAM xoay khóa mới, các Downstream Services tự động phát hiện `kid` mới và fetch Public Key bổ sung vào cache mà không làm gián đoạn bất kỳ phiên thi nào đang diễn ra.
+
+---
+
+### 4.4. Mã Hóa Phân Quyền Hạt Mịn: Scopes `<service>:<action>`
+Hệ thống chuẩn hóa toàn bộ quyền hạn theo cú pháp tường minh:
+$$\text{Scope} = \mathbf{\langle service \rangle} : \mathbf{\langle action \rangle}$$
+
+#### Bảng Danh Mục Scopes & Phân Bổ Theo Global Roles:
+| Service | Action | Scope Mã Hóa | Role Cho Phép |
+|---|---|---|---|
+| **Question Service** | Tạo câu hỏi mới | `question:create` | `ADMIN`, `AUTHOR` |
+| | Tạo phiên bản mới | `question:version` | `ADMIN`, `AUTHOR` |
+| | Thẩm định / Duyệt câu hỏi | `question:review`, `question:publish` | `ADMIN`, `REVIEWER` |
+| | Xem kho câu hỏi | `question:read` | `ADMIN`, `AUTHOR`, `REVIEWER` |
+| | Xóa mềm câu hỏi | `question:delete` | `ADMIN` |
+| **Knowledge Service** | Đọc cây tri thức | `knowledge:read` | `ADMIN`, `AUTHOR`, `REVIEWER` |
+| | Quản lý cấu trúc cây | `knowledge:manage` | `ADMIN` |
+| **Assessment Service** | Soạn thảo ma trận Blueprint | `assessment:blueprint_create` | `ADMIN`, `AUTHOR` |
+| | Thẩm định ma trận Blueprint | `assessment:blueprint_publish` | `ADMIN`, `REVIEWER` |
+| **Exam Service** | Sinh đề thi tự động | `exam:generate` | `ADMIN`, `AUTHOR` |
+| | Xuất bản & khóa đề thi | `exam:publish` | `ADMIN`, `REVIEWER` |
+| | Đọc đề thi theo biến thể | `exam:read_variant` | `ADMIN`, `REVIEWER` |
+| **Attempt Service** | Khởi tạo phiên thi | `attempt:start` | `ADMIN`, `CANDIDATE` |
+| | Lưu vết câu trả lời | `attempt:save_response` | `ADMIN`, `CANDIDATE` |
+| | Nộp bài thi | `attempt:submit` | `ADMIN`, `CANDIDATE` |
+| | Xem kết quả cá nhân | `attempt:read_own` | `ADMIN`, `CANDIDATE` |
+| **Analytics Service** | Xem độ khó ($P$), phân hóa ($D$) | `analytics:read_item_difficulty`, `analytics:read_discrimination` | `ADMIN`, `AUTHOR`, `REVIEWER` |
+| | Xuất báo cáo tâm trắc học | `analytics:export_reports` | `ADMIN` |
+| **IAM Service** | Quản trị tài khoản & gán quyền | `iam:user_manage`, `iam:role_assign` | `ADMIN` |
+
+---
+
+### 4.5. Thiết Kế Stateless External Context (`ext_ctx`)
+Để giải quyết bài toán: **Làm thế nào để hệ thống ghi log, phân quyền theo Trường/Lớp hoặc phục vụ Multi-Tenancy mà IAM không bị ô nhiễm bởi các nghiệp vụ này?**
+
+Hệ thống thiết lập cơ chế **Stateless External Context Injection**:
+- Khi Client (Web Portal, LMS hoặc Hệ thống Khảo thí Sở GD&ĐT) gửi yêu cầu xác thực tới IAM, Client có thể truyền vào một dictionary các cặp Key-Value định danh ngữ cảnh.
+- IAM Service nhận dictionary này và **đóng gói nguyên vẹn vào trường `ext_ctx`** trong Payload của Token đã được ký số RS256.
+
+#### Cấu Trúc JWT Token Payload Chuẩn:
+```json
+{
+  "iss": "https://iam.assessment-platform.internal",
+  "sub": "usr-cand-8842",
+  "aud": "assessment-platform-apis",
+  "exp": 1773057600,
+  "iat": 1773043200,
+  "jti": "tok-8842-9982-f47a",
+  "username": "candidate.hoangminh",
+  "email": "hoangminh2008@student.edu.vn",
+  "roles": ["CANDIDATE"],
+  "scopes": [
+    "attempt:start",
+    "attempt:save_response",
+    "attempt:submit",
+    "attempt:read_own"
+  ],
+  "ext_ctx": {
+    "tenant_id": "so-gddt-tphcm",
+    "school_id": "thpt-chuyen-le-hong-phong",
+    "class_id": "12-Toan-1",
+    "exam_room_id": "room-lab-04",
+    "device_fingerprint": "fp_mac_chrome_8842"
+  }
+}
+```
+
+#### Lợi Ích Của Cơ Chế `ext_ctx`:
+1. **Downstream Logging Tức Thì**: Khi thí sinh gọi `POST /api/attempts/submit`, Attempt Service trích xuất ngay `req.user.ext_ctx.tenant_id` và `req.user.ext_ctx.class_id` để ghi trực tiếp vào `attempt_db` và phát vào `AttemptCompletedEvent`.
+2. **Analytics Service Nhận Đủ Metadata**: Khi tính toán phổ điểm, `Analytics Service` có thể nhóm (GROUP BY) theo `school_id` hoặc `class_id` mà **hoàn toàn không phải truy vấn chéo sang IAM Service hay cơ sở dữ liệu nào khác**.
+3. **Phân Tách Trách Nhiệm Tuyệt Đối**: IAM Service hoàn toàn không cần bảng dữ liệu nào chứa trường lớp hay năm học.
+
+---
+
+### 4.6. Lược Đồ Cơ Sở Dữ Liệu `iam_db` (Drizzle ORM)
+```typescript
+import { pgTable, uuid, varchar, text, boolean, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
+
+// 1. Minimal Users Table
+export const iamUsersTable = pgTable('iam_users', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  username: varchar('username', { length: 64 }).notNull().unique(),
+  email: varchar('email', { length: 128 }).notNull().unique(),
+  fullName: varchar('full_name', { length: 255 }).notNull(),
+  isActive: boolean('is_active').default(true).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
+});
+
+// 2. Credentials Table (Argon2id Hashes)
+export const iamCredentialsTable = pgTable('iam_credentials', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: uuid('user_id').references(() => iamUsersTable.id, { onDelete: 'cascade' }).notNull().unique(),
+  passwordHash: text('password_hash').notNull(),
+  algorithm: varchar('algorithm', { length: 32 }).default('argon2id').notNull(),
+  passwordChangedAt: timestamp('password_changed_at', { withTimezone: true }).defaultNow().notNull()
+});
+
+// 3. Global Roles Table (ADMIN, AUTHOR, REVIEWER, CANDIDATE)
+export const iamRolesTable = pgTable('iam_roles', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  code: varchar('code', { length: 32 }).notNull().unique(),
+  name: varchar('name', { length: 64 }).notNull()
+});
+
+// 4. Role Permissions Mapping (<service>:<action>)
+export const iamRolePermissionsTable = pgTable('iam_role_permissions', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  roleId: uuid('role_id').references(() => iamRolesTable.id, { onDelete: 'cascade' }).notNull(),
+  scope: varchar('scope', { length: 64 }).notNull() // e.g. 'question:create', 'attempt:submit'
+});
+```
+
+---
+
+### 4.7. Downstream Auth Middleware (Zero Network Call Validation)
+Tất cả các dịch vụ phía sau (Downstream Services) đều tích hợp Middleware này tại tầng Infrastructure Input:
+
+```typescript
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import jwksRsa from 'jwks-rsa';
+
+// Bộ nhớ đệm Public Key lấy từ IAM JWKS Endpoint
+const jwksClient = jwksRsa({
+  jwksUri: process.env.IAM_JWKS_URI || 'http://iam-service:3000/.well-known/jwks.json',
+  cache: true,
+  rateLimit: true,
+  jwksRequestsPerMinute: 10
+});
+
+function getKey(header: any, callback: any) {
+  jwksClient.getSigningKey(header.kid, (err, key) => {
+    if (err) return callback(err);
+    callback(null, key?.getPublicKey());
+  });
+}
+
+// 1. Xác thực Token & Gắn Stateless ext_ctx
+export function authenticateIamToken(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'UNAUTHORIZED', message: 'Missing Bearer token' });
+  }
+
+  jwt.verify(authHeader.split(' ')[1], getKey, { algorithms: ['RS256'], audience: 'assessment-platform-apis' }, (err, decoded: any) => {
+    if (err) return res.status(401).json({ error: 'INVALID_TOKEN', message: err.message });
+
+    req.user = {
+      userId: decoded.sub,
+      roles: decoded.roles,
+      scopes: decoded.scopes,
+      externalContext: decoded.ext_ctx || {} // Trích xuất ext_ctx an toàn
+    };
+    next();
+  });
+}
+
+// 2. Guard kiểm tra phân quyền hạt mịn <service>:<action>
+export function requireScope(requiredScope: string) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const userScopes: string[] = req.user?.scopes || [];
+    if (!userScopes.includes(requiredScope)) {
+      return res.status(403).json({
+        error: 'FORBIDDEN_SCOPE',
+        message: `Hành động yêu cầu quyền [${requiredScope}]. User chỉ có: [${userScopes.join(', ')}]`
+      });
+    }
+    next();
+  };
+}
+```
+
+---
+
+## 5. Chuẩn Thiết Kế Hexagonal Architecture
 
 Mỗi dịch vụ (ví dụ: `question-service`) được cấu trúc chặt chẽ theo 3 tầng cô lập:
 
@@ -200,11 +435,11 @@ question-service/
 
 ---
 
-## 5. Thiết Kế Cơ Sở Dữ Liệu & Indexing Strategy
+## 6. Thiết Kế Cơ Sở Dữ Liệu & Indexing Strategy
 
 Hệ thống sử dụng **Drizzle ORM** kết hợp **PostgreSQL** để quản trị cơ sở dữ liệu với kiểu dữ liệu an toàn (Type-Safe).
 
-### 5.1. Sơ Đồ Quan Hệ Dữ Liệu (ERD Tóm Tắt)
+### 6.1. Sơ Đồ Quan Hệ Dữ Liệu (ERD Tóm Tắt)
 
 ```
 [curriculums] 1──N [subjects] 1──N [topics] 1──N [knowledge_nodes]
@@ -217,7 +452,7 @@ Hệ thống sử dụng **Drizzle ORM** kết hợp **PostgreSQL** để quản
                          └── 1──N [exam_variant_items]
 ```
 
-### 5.2. Các Bảng Chính Trong `question_db`
+### 6.2. Các Bảng Chính Trong `question_db`
 
 ```typescript
 // 1. Gốc câu hỏi (Bền vững theo thời gian)
@@ -265,7 +500,7 @@ export const questionOptionsTable = pgTable('question_options', {
 }));
 ```
 
-### 5.3. Chiến Lược Đánh Index Chiến Thuật (Performance Tuning)
+### 6.3. Chiến Lược Đánh Index Chiến Thuật (Performance Tuning)
 1. **Candidate Pool Indexing**: `CREATE INDEX idx_qver_cognitive_status ON question_versions (cognitive_level, status, question_type);`
    - *Lý do*: Khi sinh đề từ 100,000 câu hỏi, Exam Engine lọc theo `status = 'PUBLISHED' AND cognitive_level = 'APPLY'`. Composite Index này giúp truy vấn hoàn thành dưới $2\text{ms}$.
 2. **Knowledge Tree Materialized Path**: Trên bảng `knowledge_nodes`, trường `materialized_path` (ví dụ `1.3.12`) được gắn B-Tree index, cho phép tìm tất cả các câu hỏi thuộc toàn bộ cây con bằng toán tử `LIKE '1.3.%'`.
@@ -273,7 +508,7 @@ export const questionOptionsTable = pgTable('question_options', {
 
 ---
 
-## 6. Thuật Toán Sinh Đề Thi Xác Định
+## 7. Thuật Toán Sinh Đề Thi Xác Định
 
 Quy trình sinh đề thi từ Ma trận Blueprint được chuẩn hóa theo sơ đồ sau:
 
@@ -295,7 +530,7 @@ Quy trình sinh đề thi từ Ma trận Blueprint được chuẩn hóa theo s�
 [Exam Aggregate: PUBLISH] ──▶ Khóa BẤT BIẾN (Chặn sửa đổi sau khi Publish)
 ```
 
-### 6.1. Thuật Toán Sinh Số Giả Ngẫu Nhiên (Mulberry32 PRNG)
+### 7.1. Thuật Toán Sinh Số Giả Ngẫu Nhiên (Mulberry32 PRNG)
 ```typescript
 export function createMulberry32(seed: number): () => number {
   return function () {
@@ -307,7 +542,7 @@ export function createMulberry32(seed: number): () => number {
 }
 ```
 
-### 6.2. Thuật Toán Xáo Trộn Fisher-Yates Xác Định
+### 7.2. Thuật Toán Xáo Trộn Fisher-Yates Xác Định
 ```typescript
 export function seededShuffle<T>(array: readonly T[], rng: () => number): T[] {
   const result = [...array];
@@ -319,7 +554,7 @@ export function seededShuffle<T>(array: readonly T[], rng: () => number): T[] {
 }
 ```
 
-### 6.3. Nguyên Tắc Bảo Toàn Ánh Xạ Chấm Điểm (`originalKey`)
+### 7.3. Nguyên Tắc Bảo Toàn Ánh Xạ Chấm Điểm (`originalKey`)
 Khi xáo trộn các phương án lựa chọn:
 - Vị trí hiển thị trên đề thi của thí sinh được gán nhãn mới là `key: 'A' | 'B' | 'C' | 'D'`.
 - Hệ thống luôn bảo lưu thuộc tính `originalKey` trỏ về phương án gốc trong ngân hàng câu hỏi.
@@ -327,9 +562,9 @@ Khi xáo trộn các phương án lựa chọn:
 
 ---
 
-## 7. Đặc Tả Hợp Đồng Bất Đồng Bộ
+## 8. Đặc Tả Hợp Đồng Bất Đồng Bộ
 
-### 7.1. CloudEvents Schema Cho `AttemptCompletedEvent`
+### 8.1. CloudEvents Schema Cho `AttemptCompletedEvent`
 * **Kafka Topic**: `assessment.attempt.completed.v1`
 * **Partition Key**: `payload.examId` *(Đảm bảo tất cả bài thi cùng 1 kỳ thi đổ vào cùng một partition để thống kê chuẩn xác)*
 * **Retention**: 30 ngày (Append-Only)
@@ -384,17 +619,17 @@ Khi xáo trộn các phương án lựa chọn:
 }
 ```
 
-### 7.2. Chính Sách Xử Lý Lỗi Phía Consumer (Resilience Strategy)
+### 8.2. Chính Sách Xử Lý Lỗi Phía Consumer (Resilience Strategy)
 1. **Idempotent Consumers**: Sử dụng `eventId` làm Idempotency Key lưu vào Redis cache trong 7 ngày để chống xử lý trùng lặp tin nhắn (At-Least-Once Delivery).
 2. **Dead Letter Queue (DLQ)**: Nếu Consumer gặp lỗi logic hoặc schema không hợp lệ sau 3 lần Retry (Exponential Backoff: 1s, 5s, 20s), tin nhắn được đẩy sang Topic `assessment.attempt.completed.dlq` kèm stacktrace để kỹ sư điều tra.
 
 ---
 
-## 8. Phép Đo Tâm Trắc Học Giáo Dục
+## 9. Phép Đo Tâm Trắc Học Giáo Dục
 
 **Analytics Service** tự động tính toán các chỉ số kiểm định chất lượng đề thi chuẩn hóa quốc tế:
 
-### 8.1. Chỉ Số Độ Khó Của Câu Hỏi (Item Difficulty - $P$)
+### 9.1. Chỉ Số Độ Khó Của Câu Hỏi (Item Difficulty - $P$)
 $$P = \frac{R}{N}$$
 *Trong đó:*
 - $R$: Số thí sinh trả lời đúng câu hỏi đó.
@@ -407,7 +642,7 @@ $$P = \frac{R}{N}$$
 - $0.15 \le P < 0.30$: Câu hỏi **Khó**.
 - $P < 0.15$: Câu hỏi **Rất khó** (Cần kiểm tra lại nội dung có đánh đố hoặc sai đề).
 
-### 8.2. Chỉ Số Độ Phân Hóa (Discrimination Index - $D$ theo Quy Tắc Kelly 27%)
+### 9.2. Chỉ Số Độ Phân Hóa (Discrimination Index - $D$ theo Quy Tắc Kelly 27%)
 Sắp xếp danh sách thí sinh theo tổng điểm thi từ cao xuống thấp:
 - Nhóm Điểm Cao ($U$ - Upper Group): Gồm 27% số thí sinh có điểm cao nhất.
 - Nhóm Điểm Thấp ($L$ - Lower Group): Gồm 27% số thí sinh có điểm thấp nhất.
@@ -425,20 +660,21 @@ $$D = \frac{R_U - R_L}{n_{27\%}}$$
 - $D < 0.20$: Câu hỏi **Kém** (Cần loại bỏ khỏi ngân hàng câu hỏi hoặc viết lại hoàn toàn).
 - $D < 0$: Câu hỏi **Bất thường / Nghịch đảo** (Học sinh giỏi làm sai nhiều hơn học sinh yếu -> Khả năng cao đáp án bị nhập ngược hoặc câu hỏi có bẫy sai logic).
 
-### 8.3. Phân Tích Phương Án Nhiễu (Distractor Analysis)
+### 9.3. Phân Tích Phương Án Nhiễu (Distractor Analysis)
 Một phương án nhiễu (Distractor - đáp án sai) được coi là **hoạt động hiệu quả** khi:
 1. Thu hút được ít nhất $5\%$ tổng số thí sinh lựa chọn.
 2. Tỷ lệ lựa chọn của nhóm điểm thấp ($L$) phải **cao hơn** tỷ lệ lựa chọn của nhóm điểm cao ($U$). Nếu nhóm học sinh giỏi lại chọn phương án nhiễu nhiều hơn nhóm học sinh yếu, phương án đó gây hiểu nhầm hoặc có từ ngữ mập mờ.
 
 ---
 
-## 9. Kiến Trúc Frontend
+## 10. Kiến Trúc Frontend
 
 Frontend được xây dựng trên nền **React 19 + Tailwind CSS**, tổ chức theo mô hình **Vertical Feature Slices** ánh xạ trực tiếp với các Bounded Contexts:
 
 ```
 src/
 ├── features/
+│   ├── 0-iam/                    # IAM Client, JWT Token Inspector, Session Store
 │   ├── 1-knowledge/              # Quản lý Cây tri thức & Learning Outcomes
 │   │   ├── api/use-knowledge.ts  # TanStack Query
 │   │   └── components/
@@ -468,28 +704,29 @@ src/
 
 ---
 
-## 10. Quy Chuẩn Lập Trình & Quy Trình Kỹ Thuật
+## 11. Quy Chuẩn Lập Trình & Quy Trình Kỹ Thuật
 
-### 10.1. Quy Ước Đặt Tên & Cấu Trúc File
+### 11.1. Quy Ước Đặt Tên & Cấu Trúc File
 - Tên thư mục và file: `kebab-case` (ví dụ: `question-version.entity.ts`, `use-exam-engine.ts`).
 - Tên Class, Aggregate, Entity: `PascalCase` (ví dụ: `QuestionAggregate`, `ExamGenerationEngine`).
 - Tên Interface: Bắt đầu bằng tiền tố `I` cho Ports (ví dụ: `IQuestionRepositoryPort`, `IEventPublisherPort`).
 - Tên Database Tables: Số nhiều, `snake_case` (ví dụ: `questions`, `question_versions`, `knowledge_nodes`).
 
-### 10.2. Quy Chuẩn Git & Commit (Conventional Commits)
+### 11.2. Quy Chuẩn Git & Commit (Conventional Commits)
 Mọi commit phải tuân theo cấu trúc:
 ```
 <type>(<scope>): <short summary>
 
 [optional body]
 ```
+- `feat(iam)`: Bổ sung phát hành JWT token RS256 và endpoint JWKS
 - `feat(question)`: Thêm tính năng tạo phiên bản mới của câu hỏi
 - `fix(exam-engine)`: Sửa lỗi tràn số trong hàm sinh số giả ngẫu nhiên Mulberry32
 - `refactor(hexagonal)`: Tách nhỏ Driven Port cho Repository
 - `perf(drizzle)`: Tối ưu index composite cho Candidate Pool
 - `test(psychometrics)`: Bổ sung unit test kiểm thử chỉ số phân hóa $D$ theo quy tắc Kelly 27%
 
-### 10.3. Tháp Kiểm Thử (Testing Strategy)
+### 11.3. Tháp Kiểm Thử (Testing Strategy)
 1. **Unit Tests (Jest / Vitest)**: Kiểm thử 100% logic trong thư mục `src/domain/` và các thuật toán toán học (`Mulberry32`, `Fisher-Yates`, `Psychometrics Formulae`). Không cần mock database.
 2. **Contract Tests (Pact / Protobuf)**: Kiểm thử hợp đồng gRPC giữa Exam Service và Question Service, đảm bảo không có breaking changes.
 3. **Integration Tests (Testcontainers)**: Khởi chạy PostgreSQL và Kafka thật trong Docker để kiểm tra các Drizzle Adapters và Kafka Consumers.
@@ -497,15 +734,15 @@ Mọi commit phải tuân theo cấu trúc:
 
 ---
 
-## 11. Hướng Dẫn Cài Đặt & Vận Hành
+## 12. Hướng Dẫn Cài Đặt & Vận Hành
 
-### 11.1. Yêu Cầu Môi Trường
+### 12.1. Yêu Cầu Môi Trường
 - **Node.js**: $\ge 20.0.0$ LTS
 - **Bun / NPM / Yarn**: Bản mới nhất
 - **Docker & Docker Compose**: Dùng để chạy PostgreSQL và Kafka cụm địa phương
 - **PostgreSQL**: Phiên bản 16+
 
-### 11.2. Biến Môi Trường (.env.example)
+### 12.2. Biến Môi Trường (.env.example)
 Sao chép file cấu hình mẫu:
 ```bash
 cp .env.example .env
@@ -517,9 +754,10 @@ NODE_ENV=development
 DATABASE_URL=postgres://postgres:password@localhost:5432/educational_assessment_db
 KAFKA_BROKERS=localhost:9092
 KAFKA_CLIENT_ID=assessment-platform-local
+IAM_JWKS_URI=http://iam-service:3000/.well-known/jwks.json
 ```
 
-### 11.3. Khởi Chạy Local Development
+### 12.3. Khởi Chạy Local Development
 ```bash
 # 1. Cài đặt các gói phụ thuộc
 npm install
@@ -535,6 +773,19 @@ npm run build
 ```
 
 Sau khi khởi chạy, truy cập ứng dụng tại `http://localhost:3000` để trải nghiệm trực tiếp **Interactive Architecture Workbench & Psychometrics Lab**.
+
+---
+
+## 13. Kế Hoạch Triển Khai Chi Tiết (Master Implementation Plan: `/plan/`)
+
+Dự án đã được phân tách kế hoạch triển khai hoàn chỉnh trong thư mục chuyên biệt [`/plan/`](./plan/):
+
+1. **[`plan/README.md`](./plan/README.md)**: Tổng quan chiến lược, nguyên tắc quản trị và 6 cột mốc nghiệm thu (Milestones M0 $\rightarrow$ M6 trong 19 tuần).
+2. **[`plan/01-service-dependency-order.md`](./plan/01-service-dependency-order.md)**: Đồ thị phụ thuộc hướng (DAG) và lý do bắt buộc của thứ tự 7 dịch vụ (`IAM` $\rightarrow$ `Knowledge` $\rightarrow$ `Question` $\rightarrow$ `Assessment` $\rightarrow$ `Exam` $\rightarrow$ `Attempt` $\rightarrow$ `Analytics`).
+3. **[`plan/02-implementation-phases.md`](./plan/02-implementation-phases.md)**: Lộ trình 7 giai đoạn (Phase 0 đến Phase 6) từ hạ tầng Kubernetes/Kafka, phát triển lõi, đến nghiệm thu.
+4. **[`plan/03-technical-execution-steps.md`](./plan/03-technical-execution-steps.md)**: Chi tiết kỹ thuật: Database partitioning cho bảng `attempts`, gRPC Protobuf contracts, Kafka idempotency, và client offline sync queue.
+5. **[`plan/04-testing-qa-security-gates.md`](./plan/04-testing-qa-security-gates.md)**: Tháp kiểm thử 4 tầng, kịch bản k6 stress test 100,000 thí sinh nộp bài trong 15 phút, và tiêu chuẩn Definition of Done (DoD).
+6. **[`plan/05-risk-matrix-contingency.md`](./plan/05-risk-matrix-contingency.md)**: Ma trận rủi ro trọng yếu, kịch bản ứng phó sự cố khẩn cấp (Runbooks) và cam kết RPO = 0, RTO < 2 phút.
 
 ---
 

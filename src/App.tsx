@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { NavigationHeader, ActiveTabType } from './components/NavigationHeader';
+import { Deliverable0IAM } from './components/Deliverable0IAM';
+import { DeliverableImplementationPlan } from './components/DeliverableImplementationPlan';
 import { Deliverable1Hexagonal } from './components/Deliverable1Hexagonal';
 import { Deliverable2Drizzle } from './components/Deliverable2Drizzle';
 import { Deliverable3ExamEngine } from './components/Deliverable3ExamEngine';
@@ -9,7 +11,7 @@ import { LivePsychometricsLab } from './components/LivePsychometricsLab';
 import { CheckCircle2, ShieldAlert, BookOpen, Layers } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTabType>('hexagonal');
+  const [activeTab, setActiveTab] = useState<ActiveTabType>('plan');
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-100/70 text-slate-800">
@@ -18,6 +20,8 @@ export default function App() {
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'plan' && <DeliverableImplementationPlan />}
+        {activeTab === 'iam' && <Deliverable0IAM />}
         {activeTab === 'hexagonal' && <Deliverable1Hexagonal />}
         {activeTab === 'drizzle' && <Deliverable2Drizzle />}
         {activeTab === 'exam-engine' && <Deliverable3ExamEngine />}
